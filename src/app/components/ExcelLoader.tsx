@@ -76,10 +76,10 @@ export default function ExcelLoader() {
       if (foundFuncionario) {
         setResult({
           Tipo: "Funcionário",
+          Veiculo: foundFuncionario["Fabricante e Modelo"],
+          Placa: foundFuncionario["Placa"],
           Nome: foundFuncionario["Nome"],
           Setor: foundFuncionario["Setor"],
-          Placa: foundFuncionario["Placa"],
-          "Fabricante e Modelo": foundFuncionario["Fabricante e Modelo"],
         });
         setLoading(false);
         return;
@@ -92,10 +92,14 @@ export default function ExcelLoader() {
       if (foundPrestador) {
         setResult({
           Tipo: "Prestador",
-          Motorista: foundPrestador["Motorista"],
           Empresa: foundPrestador["Empresa"],
+          Veiculo: foundPrestador["Fabricante e Modelo"],
           Placa: foundPrestador["Placa"],
-          Responsável: foundPrestador["Funcionário responsável"],
+          Motorista: foundPrestador["Motorista"],
+          sResponsavel: foundPrestador["Setor responsável"],
+          fResponsavel: foundPrestador["Funcionário responsável"],
+          Status: foundPrestador["Situação"],
+          Obs: foundPrestador["Ocorrências"],
         });
         setLoading(false);
         return;
@@ -111,31 +115,62 @@ export default function ExcelLoader() {
   };
 
   return (
-    <div>
-      <div className="mt-4">
-        <input
-          type="text"
-          placeholder="Digite a placa"
-          value={plateQuery}
-          onChange={(e) => setPlateQuery(e.target.value)}
-          className="px-4 py-2 border border-gray-300 rounded-md"
-        />
-        <button
-          onClick={handlePlateSearch}
-          className="ml-2 px-4 py-2 bg-green-500 text-white rounded-md"
-          disabled={loading}
-        >
-          {loading ? "Buscando..." : "Consultar"}
-        </button>
+    <div className="flex flex-col m-0 p-0 items-center text-cinza bg-branco">
+      <div className="w-full">
+        <form className="w-full m-0 py-4 px-8 gap-1 flex flex-col items-center justify-center bg-azul text-black">
+          <h1 className="text-3xl my-2 ">Consulta de veículos</h1>
+          <div className="form">
+            <label htmlFor="">Digite a placa </label>
+            <input
+              type="text"
+              pattern="^[a-zA-Z]{3}.*" placeholder="Ex: XXX0000"
+              maxLength={7}
+              required
+              value={plateQuery}
+              onChange={(e) => setPlateQuery(e.target.value)}
+              className="border-none rounded-[20px] m-1 p-[.7rem] text-[.75rem] bg-white w-[6rem] text-center text-cinza"
+            />
+            <button
+              onClick={handlePlateSearch}
+              disabled={loading}
+              className="border-none rounded-[20px] m-1 p-[.7rem] text-sm bg-cinza text-white font-semibold"
+            >
+              {loading ? "Buscando..." : "Consultar"}
+            </button>
+          </div>
+        </form>
       </div>
 
       {/* Exibição do resultado */}
       {loading && <p className="mt-4 text-blue-500">Carregando...</p>}
 
       {result ? (
-        <pre className="mt-4 p-2 bg-gray-100 rounded-md overflow-x-auto">
-          {JSON.stringify(result, null, 2)}
-        </pre>
+        result.Tipo === "Funcionário" ? (
+          <div>
+            <h1 className="m-4 text-center font-bold text-2xl">Funcionário</h1>
+            <p><strong>Veiculo: </strong>{result.Veiculo}</p>
+            <p><strong>Placa: </strong>{result.Placa}</p>
+            <p><strong>Nome: </strong>{result.Nome}</p>
+            <p><strong>Setor: </strong>{result.Setor}</p>
+          </div>
+        ) : (
+          <div>
+            <h1 className="m-4 text-center font-bold text-2xl">Prestador</h1>
+            <p><strong>Empresa: </strong>{result.Empresa}</p>
+            <p><strong>Veiculo: </strong>{result.Veiculo}</p>
+            <p><strong>Placa: </strong>{result.Placa}</p>
+            <p><strong>Nome do motorista: </strong>{result.Motorista}</p>
+            <p><strong>Setor responsável: </strong>{result.sResponsavel}</p>
+            <p><strong>Funcionário responsável: </strong>{result.fResponsavel}</p>
+            <br/>
+            <br/>
+             {result.Status === "Inativo" ? <p className="text-red-500 text-center"><strong>Inativo</strong></p> : <p className="text-green-500 text-center"><strong>Ativo</strong></p>}
+            
+            {result.Obs ? (
+              <p><strong>Ocorrências: </strong>{result.Obs}</p>
+            ) : null}
+          </div>
+        )
       ) : (
         !loading && <p className="mt-4 text-red-500">Placa não encontrada</p>
       )}

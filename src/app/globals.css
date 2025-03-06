@@ -3,3 +3,8 @@
 *{
     font-family: 'Quicksand', sans-serif;
 }
+@theme {
+    --color-azul: #004c99;
+    --color-cinza: #434343;
+    --color-branco: #F5F5F5;
+}
