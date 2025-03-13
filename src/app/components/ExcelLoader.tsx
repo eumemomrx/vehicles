@@ -117,7 +117,7 @@ export default function ExcelLoader() {
   return (
     <div className="flex flex-col m-0 p-0 items-center text-cinza bg-branco">
       <div className="w-full">
-        <form className="w-full m-0 py-4 px-8 gap-1 flex flex-col items-center justify-center bg-azul text-black">
+        <form className="w-full m-0 py-4 px-8 gap-1 flex flex-col items-center justify-center bg-azul text-branco">
           <h1 className="text-3xl my-2 ">Consulta de veículos</h1>
           <div className="form">
             <label htmlFor="">Digite a placa </label>
