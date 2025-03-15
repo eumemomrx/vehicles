@@ -22,7 +22,6 @@ export default function ExcelLoader() {
       let allData: any = {};
 
       for (let i = 0; i < urls.length; i++) {
-        console.log(`Carregando planilha ${i}:`, urls[i]);
 
         const response = await fetch(urls[i]);
         const blob = await response.blob();
@@ -35,7 +34,7 @@ export default function ExcelLoader() {
               const arrayBuffer = e.target.result as ArrayBuffer;
               const workbook = XLSX.read(new Uint8Array(arrayBuffer));
 
-              // Pegamos a primeira aba da planilha
+              // Pega a primeira aba da planilha
               const sheetName = workbook.SheetNames[0];
               const sheet = workbook.Sheets[sheetName];
 
@@ -52,7 +51,6 @@ export default function ExcelLoader() {
         allData[i] = data;
       }
 
-      console.log("Dados carregados:", allData);
       setLoading(false);
       return allData;
     } catch (error) {
