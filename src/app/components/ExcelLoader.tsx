@@ -169,8 +169,8 @@ export default function ExcelLoader() {
             ) : null}
           </div>
         )
-      ) : (
-        !loading && <p className="mt-4 text-red-500">Placa não encontrada</p>
+      ) : !loading && plateQuery !== "" && result === null && (
+        <p className="mt-4 text-red-500">Placa não encontrada</p>
       )}
     </div>
   );
